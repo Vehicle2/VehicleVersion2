@@ -6,17 +6,26 @@
 package ni.edu.uni.programacion.views;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import ni.edu.uni.programacion.backend.dao.implementation.JsonVehicleDaoImpl;
 import ni.edu.uni.programacion.backend.pojo.Vehicle;
 import ni.edu.uni.programacion.controllers.PnlVehicleController;
 import ni.edu.uni.programacion.controllers.PnlViewVehicleController;
+import ni.edu.uni.programacion.internal.view.DlgAppVehicle;
+import ni.edu.uni.programacion.views.FrmVehicleApp;
 import ni.edu.uni.programacion.views.models.VehicleTableModel;
 import ni.edu.uni.programacion.views.panels.PnlViewVehicles;
 
@@ -24,7 +33,7 @@ import ni.edu.uni.programacion.views.panels.PnlViewVehicles;
  *
  * @author Sistemas-05
  */
-public class InternalFView extends javax.swing.JInternalFrame {
+public class AppVehicle extends javax.swing.JInternalFrame {
     
     private PnlViewVehicles pnlViewVehicles;
     private PnlViewVehicleController pnlViewVehicleController;
@@ -32,12 +41,36 @@ public class InternalFView extends javax.swing.JInternalFrame {
     private VehicleTableModel vehicleTbl;
     private List<Vehicle> data;
     private final String[] columnNames = null;
+      private JsonVehicleDaoImpl jsonVehicleDaoImpl;
+    private VehicleTableModel tblViewModel;
+    private List<Vehicle> vehicles;
+    private String[] HEADERS = new String[]{"StockNumber", "Year", "Make", "Model", "Style",
+        "Vin", "Exterior color", "Interior color", "Miles", "Price", "Transmission", "Engine", "Image", "Status"};
+    private TableRowSorter<VehicleTableModel> tblRowSorter;
     
     /**
      * Creates new form IFrmVehicle
      */
-    public InternalFView() {
-        initComponents();        
+    public AppVehicle() {
+        initComponents();  
+         try {
+            jsonVehicleDaoImpl = new JsonVehicleDaoImpl();
+
+            loadTable();
+
+            pnlViewVehicles.getTxtFinder().addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    txtFinderKeyTyped(e);
+                }
+                
+            });
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PnlViewVehicleController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PnlViewVehicleController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -67,6 +100,7 @@ public class InternalFView extends javax.swing.JInternalFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
+        btnNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Webp.net-resizeimage.png"))); // NOI18N
         btnNew.setText("New");
         btnNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,7 +135,7 @@ public class InternalFView extends javax.swing.JInternalFrame {
         pnlContent.add(pnlViewVehicles, BorderLayout.CENTER);
         getContentPane().add(pnlContent, java.awt.BorderLayout.CENTER);
 
-        setBounds(0, 0, 758, 548);
+        setBounds(0, 0, 688, 510);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
@@ -123,23 +157,76 @@ public class InternalFView extends javax.swing.JInternalFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         
-        pnlViewVehicles = new PnlViewVehicles();
-        pnlViewVehicleController = new PnlViewVehicleController(pnlViewVehicles);
-        
-        try { 
-            pnlViewVehicleController.loadTable();
-            tableModel = (DefaultTableModel)pnlViewVehicles.getTblViewVehicle().getModel();
-            tableModel.removeRow(pnlViewVehicles.getTblViewVehicle().getSelectedRow());
-        } catch (IOException ex) {
-            Logger.getLogger(InternalFView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        delete(ERROR);
+        eliminarRow();
         
         
        
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+ private void txtFinderKeyTyped(KeyEvent e) {
+        RowFilter<VehicleTableModel, Object> rf = null;
+        rf = RowFilter.regexFilter(pnlViewVehicles.getTxtFinder().getText(), 0, 1, 2, 3, 4, 5, 6, 7, 8);
+        tblRowSorter.setRowFilter(rf);
+    }
+    
+    
+    public void loadTable() throws IOException {
+        vehicles = jsonVehicleDaoImpl.getAll().stream().collect(Collectors.toList());
+        tblViewModel = new VehicleTableModel(vehicles, HEADERS);
+        tblRowSorter = new TableRowSorter<>(tblViewModel);
 
+        pnlViewVehicles.getTblViewVehicle().setModel(tblViewModel);
+        pnlViewVehicles.getTblViewVehicle().setRowSorter(tblRowSorter);
+    }
+   
+    public void delete(int pos){
+        for (Vehicle list : vehicles) {
+            vehicles.remove(pos);
+        }
+    }
+    
+    public void eliminarRow(){
+        pnlViewVehicles = pnlViewVehicles;
+        tableModel = (DefaultTableModel)pnlViewVehicles.getTblViewVehicle().getModel();
+        tableModel.removeRow(pnlViewVehicles.getTblViewVehicle().getSelectedRow());
+    
+    }
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(FrmVehicleApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FrmVehicleApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FrmVehicleApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FrmVehicleApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FrmVehicleApp().setVisible(true);
+            }
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnNew;

@@ -10,7 +10,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import ni.edu.uni.programacion.controllers.PnlViewVehicleController;
-import ni.edu.uni.programacion.views.DlgAppVehicle;
+import ni.edu.uni.programacion.internal.view.DlgAppVehicle;
 
 /**
  *

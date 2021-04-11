@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ni.edu.uni.programacion.views;
+package ni.edu.uni.programacion.internal.view;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeListener;

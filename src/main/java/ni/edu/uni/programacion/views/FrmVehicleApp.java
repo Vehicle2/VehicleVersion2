@@ -5,12 +5,14 @@
  */
 package ni.edu.uni.programacion.views;
 
+
+import ni.edu.uni.programacion.internal.view.DlgAppVehicle;
 import javax.swing.JFrame;
 import ni.edu.uni.programacion.controllers.PnlViewVehicleController;
 import ni.edu.uni.programacion.views.panels.PnlViewVehicles;
-import java.beans.PropertyChangeListener;
-import ni.edu.uni.programacion.controllers.PnlVehicleController;
-import ni.edu.uni.programacion.views.panels.PnlVehicle;
+
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Sistemas-05
@@ -20,11 +22,18 @@ public class FrmVehicleApp extends javax.swing.JFrame {
     private PnlViewVehicles pnlViewVehicles;
     private PnlViewVehicleController pnlViewVehicleController;
     private DlgAppVehicle dlgVehicle;
-    /**
-     * Creates new form MDIVehicle
-     */
+    private DefaultTableModel tableModel;
+    
+//    private JsonVehicleDaoImpl jsonVehicleDaoImpl;
+//    private VehicleTableModel tblViewModel;
+//    private List<Vehicle> vehicles;
+//    private String[] HEADERS = new String[]{"StockNumber", "Year", "Make", "Model", "Style",
+//        "Vin", "Exterior color", "Interior color", "Miles", "Price", "Transmission", "Engine", "Image", "Status"};
+//    private TableRowSorter<VehicleTableModel> tblRowSorter;
+//   
     public FrmVehicleApp() {
         initComponents();
+
     }
 
     /**
@@ -71,6 +80,7 @@ public class FrmVehicleApp extends javax.swing.JFrame {
         jMenu1.setText("DIRECTORY");
 
         mniNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar-archivo.png"))); // NOI18N
         mniNew.setText("New");
         mniNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,6 +90,7 @@ public class FrmVehicleApp extends javax.swing.JFrame {
         jMenu1.add(mniNew);
 
         mniView.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ojo.png"))); // NOI18N
         mniView.setText("View");
         mniView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +101,7 @@ public class FrmVehicleApp extends javax.swing.JFrame {
         jMenu1.add(jSeparator1);
 
         mniExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        mniExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cerrar-sesion (1).png"))); // NOI18N
         mniExit.setText("Exit");
         mniExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,7 +118,7 @@ public class FrmVehicleApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mniViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniViewActionPerformed
-        InternalFView iFrmVehicle = new InternalFView();
+        AppVehicle iFrmVehicle = new AppVehicle();
         
         dtpContent.add(iFrmVehicle);
         iFrmVehicle.setVisible(true);
@@ -122,42 +134,9 @@ public class FrmVehicleApp extends javax.swing.JFrame {
         
         System.exit(0);
     }//GEN-LAST:event_mniExitActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmVehicleApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmVehicleApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmVehicleApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmVehicleApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmVehicleApp().setVisible(true);
-            }
-        });
-    }
+    
+    
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dtpContent;
