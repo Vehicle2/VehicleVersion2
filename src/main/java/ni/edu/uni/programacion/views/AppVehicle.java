@@ -25,7 +25,7 @@ import ni.edu.uni.programacion.backend.pojo.Vehicle;
 import ni.edu.uni.programacion.controllers.PnlVehicleController;
 import ni.edu.uni.programacion.controllers.PnlViewVehicleController;
 import ni.edu.uni.programacion.internal.view.DlgAppVehicle;
-import ni.edu.uni.programacion.views.FrmVehicleApp;
+import ni.edu.uni.programacion.internal.view.FrmVehicleApp;
 import ni.edu.uni.programacion.views.models.VehicleTableModel;
 import ni.edu.uni.programacion.views.panels.PnlViewVehicles;
 

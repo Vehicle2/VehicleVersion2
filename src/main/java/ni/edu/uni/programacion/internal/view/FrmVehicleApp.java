@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ni.edu.uni.programacion.views;
+package ni.edu.uni.programacion.internal.view;
 
 
 import ni.edu.uni.programacion.internal.view.DlgAppVehicle;
@@ -12,6 +12,8 @@ import ni.edu.uni.programacion.controllers.PnlViewVehicleController;
 import ni.edu.uni.programacion.views.panels.PnlViewVehicles;
 
 import javax.swing.table.DefaultTableModel;
+import ni.edu.uni.programacion.views.AppVehicle;
+import ni.edu.uni.programacion.views.AppVehicle;
 
 /**
  *
